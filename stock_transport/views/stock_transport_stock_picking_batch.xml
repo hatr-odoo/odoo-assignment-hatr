@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- View Inheritance for form -->
+    <record id="stock_transport_stock_picking_batch_form" model="ir.ui.view">
+        <field name="name">stock.picking.batch.form</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='scheduled_date']" position="after">
+                <field name="dock_id" string="Dock"/>
+                <field name="vehicle_id" string="Vehicule" placeholder="Third Party Provider"/>
+                <field name="vehicle_category_id" string="Vehicle Category" placeholder="e.g. Semi-Truck"/>
+                <field name="weight" invisible="not vehicle_category_id" widget="progressbar"/>
+                <field name="volume" invisible="not vehicle_category_id" widget="progressbar"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action Inheritance -->
+    <record id="stock_picking_batch.stock_picking_batch_action" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,form,graph,gantt</field>
+    </record>
+
+    <!-- Graph View -->
+    <record model="ir.ui.view" id="stock_transport_stock_picking_batch_graph">
+        <field name="name">stock.transport.stock.picking.batch.graph</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Graph" type="bar">
+                <field name="scheduled_date" interval="day"/>
+                <field name="vehicle_category_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Gantt View -->
+    <record id="stock_transport_stock_picking_batch_gantt" model="ir.ui.view">
+        <field name="name">stock.transport.stock.picking.batch.gantt</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="type">gantt</field>
+        <field name="arch" type="xml">
+            <gantt date_start="date_start"
+            date_stop="date_deadline"
+            default_group_by='fleet_id'>
+            </gantt>
+        </field>
+    </record>
+</odoo>
