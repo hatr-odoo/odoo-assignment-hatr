@@ -41,8 +41,14 @@
         <field name="type">gantt</field>
         <field name="arch" type="xml">
             <gantt date_start="date_start"
-            date_stop="date_deadline"
-            default_group_by='fleet_id'>
+            date_stop="scheduled_date"
+            color="vehicle_id"
+            default_group_by="dock_id,vehicle_id"
+            decoration-info="state in ['draft']"
+            string="Schedule">
+
+            <field name="name" />
+            <field name="state" invisible="1"/>
             </gantt>
         </field>
     </record>

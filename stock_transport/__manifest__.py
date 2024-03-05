@@ -14,7 +14,6 @@
     ],
     'demo': [
     ],
-    'application': True,
     'installable': True,
     'license': 'OEEL-1'
 }

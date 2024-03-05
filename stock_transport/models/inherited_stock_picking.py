@@ -4,7 +4,6 @@ class inheritedStockPicking(models.Model):
     _inherit = "stock.picking"
     
     weight = fields.Float(compute = "_compute_weight")
-    
     volume = fields.Float(compute = "_compute_volume")
             
     # method for computing weight

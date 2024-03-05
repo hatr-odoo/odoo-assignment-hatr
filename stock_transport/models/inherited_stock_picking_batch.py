@@ -1,5 +1,4 @@
 from odoo import api, fields, models
-from dateutil.relativedelta import relativedelta
 
 class inheritedStockPickingBatch(models.Model):
     _inherit = "stock.picking.batch"
@@ -12,7 +11,6 @@ class inheritedStockPickingBatch(models.Model):
     number_of_lines = fields.Integer(compute = "_compute_number_of_lines", store=True)
     dock_id = fields.Many2one('stock.transport.dock')
     date_start = fields.Date(default = fields.Date.today())
-    date_deadline = fields.Date(default = fields.Date.today()+relativedelta(days=30))
     
     # method for computing weight
     @api.depends('picking_ids', 'vehicle_category_id')
@@ -45,3 +43,10 @@ class inheritedStockPickingBatch(models.Model):
     def _compute_number_of_lines(self):
         for record in self:
             record.number_of_lines = len(record.move_ids)
+            
+    # Function for computing display name
+    @api.depends('name', 'vehicle_category_id')
+    def _compute_display_name(self):
+        for record in self:
+            gantt_name = f"{record.name}: {record.vehicle_category_id.max_weight}kg, {record.vehicle_category_id.max_volume}cm"
+            record.display_name = gantt_name
